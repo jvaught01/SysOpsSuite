@@ -112,3 +112,7 @@ htmlcov/
 
 # Ignore secrets files
 secrets.json
+
+# test backups
+08-21-2024_10-35-58/*
+08-21-2024_10-35-58/*
