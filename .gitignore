@@ -13,6 +13,7 @@ __pycache__/
 db.sqlite3
 instance/
 instance/*
+newrelic.ini
 
 # If you use a database other than SQLite, you should add its files here:
 # *.db
