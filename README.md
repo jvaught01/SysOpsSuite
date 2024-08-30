@@ -1,2 +1,0 @@
-# SysOpsSuite
-Systems Ops Toolbox
