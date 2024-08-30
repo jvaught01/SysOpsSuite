@@ -1,0 +1,70 @@
+Metadata-Version: 2.1
+Name: jsondump
+Version: 0.1
+Summary: Serialize a object including it's function into a JSON.
+Home-page: https://github.com/devguru008/jsondump
+Author: Jack Watson
+Author-email: jackp.watson888@outlook.com
+License: MIT
+Keywords: json serialize dumps loads unserialize
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# jsondump
+
+Serialize a object including it's function into a JSON.
+
+
+## Install
+
+```
+pip install jsondump
+```
+
+## Usage
+
+```python
+import jsondump
+```
+
+Serialize an object including it's function:
+
+
+```python
+obj = {
+  'name': 'Bob',
+  'say': ['Hello', 'World']
+}
+
+objS = jsondump.dumps(obj)
+type(objS) is str
+jsondump.loads(objS).name == 'Bob'
+```
+
+Serialize an object with a sub object:
+
+```python
+var objWithSubObj = {
+  'obj': {
+    'name': 'Jeff',
+    'say': ['Hello', 'World']
+  }
+}
+
+objWithSubObjS = jsondump.dumps(objWithSubObj);
+type(objWithSubObjS) is str
+jsondump.loads(objWithSubObjS).obj.name == 'Jeff'
+```

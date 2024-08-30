@@ -1,0 +1,113 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+db.sqlite3
+instance/
+instance/*
+
+# If you use a database other than SQLite, you should add its files here:
+# *.db
+# postgres_data/
+
+# Django static files:
+staticfiles/
+media/
+
+# Ignore specific virtual environment files
+env/
+venv/
+ENV/
+.venv/
+.ENV/
+
+# Ignore test coverage files
+.coverage
+.tox/
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+
+# Environment variables file
+.env
+.env.*
+
+# Ignore translations
+*.mo
+
+# Ignore local PyCharm settings
+.idea/
+
+# Ignore Visual Studio Code settings
+.vscode/
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore macOS specific files
+.DS_Store
+
+# Ignore node modules (if using npm/yarn)
+node_modules/
+
+# Ignore npm package lock file
+package-lock.json
+yarn.lock
+
+# Ignore build directories and files
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Ignore Sentry debug files
+.sentryclirc
+
+# Ignore Docker specific files
+docker-compose.yml
+Dockerfile
+*.dockerfile
+
+# Ignore gunicorn pid files
+gunicorn.pid
+
+# Ignore pyenv
+.python-version
+
+# Ignore pipenv
+Pipfile
+Pipfile.lock
+
+# Ignore celery worker PID file
+celerybeat.pid
+
+# Ignore compiled libraries
+*.so
+*.egg
+
+# Ignore pytest files
+.pytest_cache/
+pytestdebug.log
+
+# Ignore Sphinx documentation
+docs/_build/
+
+# Ignore MyPy type checker output
+.mypy_cache/
+
+# Ignore coverage reports
+htmlcov/
+
+# Ignore secrets files
+secrets.json
