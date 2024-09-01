@@ -9,7 +9,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "SysOpsSuite.settings")
 django.setup()
 
 from parse import parse_switch_config  # noqa: E402
-from Backups.models import (
+from Backups.models import (  # noqa: E402
     Backup,
 )  # Import your Django model here after setting up Django  # noqa: E402
 
