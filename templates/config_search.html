@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
-{% block content %}
 {% load static %}
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'style/styles.css' %}">
+{% endblock %}
+{% block content %}
 <div class="bg-slate-700 h-screen px-10 py-20 w-full">
   <form class="mb-6">
     <div class="max-w-2xl">
@@ -43,6 +47,7 @@
       </div>
     </div>
   </form>
+
   <!-- Results Table -->
   <div class="block w-full overflow-x-auto max-w-4xl border bg-white rounded-lg shadow-lg">
     <div class="overflow-y-auto h-80">

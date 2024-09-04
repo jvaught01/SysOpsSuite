@@ -31,34 +31,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Get all delete buttons
-  const deleteButtons = document.querySelectorAll(".deleteTaskButton");
-
-  // Add click event listener to each delete button
-  deleteButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const taskId = button.getAttribute("data-task-id");
-      deleteTask(taskId);
-    });
-  });
-
-  // Get all edit buttons
-  const editButtons = document.querySelectorAll(".editTaskButton");
-  editButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const taskId = button.getAttribute("data-task-id");
-      openModal("editModal");
-      
-      // Set the task ID in the hidden input field in the edit modal
-      document.getElementById("editTaskId").value = taskId;
-
-      // Optionally, populate other fields in the modal based on the task
-      document.getElementById("taskTitle").value = document.querySelector(`[data-task-id='${taskId}'][data-task-field='title']`).textContent;
-      document.getElementById("taskDueDate").value = document.querySelector(`[data-task-id='${taskId}'][data-task-field='due-date']`).textContent;
-      document.getElementById("taskDescription").value = document.querySelector(`[data-task-id='${taskId}'][data-task-field='description']`).textContent;
-    });
-  });
-
   // Function to update task elements
   function updateTaskElements(taskId, taskTitle, taskDueDate, description) {
     const titleElement = document.querySelector(
@@ -95,6 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
     deleteTaskElements(taskId);
   }
 
+  // Add New Task Element Function
   function addNewTaskElement(taskId, taskTitle, taskDueDate, description) {
     const taskContainer = document.createElement("div");
     taskContainer.classList.add(
@@ -139,27 +112,29 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
 
     // Insert the new task container before the "Create New Task" button
-    const taskListContainer = document.getElementById(
-      "taskListContainer"
-    );
-    taskListContainer.appendChild(taskContainer); // This appends the new task at the bottom of the list
+    const taskListContainer = document.getElementById("taskListContainer");
+    if (taskListContainer) {
+      taskListContainer.appendChild(taskContainer);
+    }
 
     // Add event listener for the new edit button
-    taskContainer
-      .querySelector(".editTaskButton")
-      .addEventListener("click", function () {
+    const editButton = taskContainer.querySelector(".editTaskButton");
+    if (editButton) {
+      editButton.addEventListener("click", function () {
         const taskId = this.getAttribute("data-task-id");
         document.getElementById("editTaskId").value = taskId;
         openModal("editModal");
       });
+    }
 
     // Add event listener for the new delete button
-    taskContainer
-      .querySelector(".deleteTaskButton")
-      .addEventListener("click", function () {
+    const deleteButton = taskContainer.querySelector(".deleteTaskButton");
+    if (deleteButton) {
+      deleteButton.addEventListener("click", function () {
         const taskId = this.getAttribute("data-task-id");
         deleteTask(taskId);
       });
+    }
   }
 
   // Modal Toggle Functions
@@ -177,21 +152,33 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Set up event listeners for buttons
-  document
-    .getElementById("createTaskButton")
-    .addEventListener("click", () => openModal("createTaskModal"));
-  document
-    .getElementById("closeEditModal")
-    .addEventListener("click", () => closeModal("editModal"));
-  document
-    .getElementById("closeCreateModal")
-    .addEventListener("click", () => closeModal("createTaskModal"));
+  // Set up event listeners for buttons if they exist
+  const createTaskButton = document.getElementById("createTaskButton");
+  if (createTaskButton) {
+    createTaskButton.addEventListener("click", () =>
+      openModal("createTaskModal")
+    );
+  }
+
+  const closeEditModalButton = document.getElementById("closeEditModal");
+  if (closeEditModalButton) {
+    closeEditModalButton.addEventListener("click", () =>
+      closeModal("editModal")
+    );
+  }
+
+  const closeCreateModalButton = document.getElementById("closeCreateModal");
+  if (closeCreateModalButton) {
+    closeCreateModalButton.addEventListener("click", () =>
+      closeModal("createTaskModal")
+    );
+  }
 
   // Form submission handler for creating a new task
-  document
-    .getElementById("createTaskForm")
-    .addEventListener("submit", function (e) {
+  const createTaskForm = document.getElementById("createTaskForm");
+  if (createTaskForm) {
+    console.log("Form found:", createTaskForm);
+    createTaskForm.addEventListener("submit", function (e) {
       e.preventDefault();
 
       // Collect form data
@@ -200,6 +187,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const taskDescription =
         document.getElementById("newTaskDescription").value;
       const taskDueDate = document.getElementById("newTaskDueDate").value;
+      console.log("Task Title:", taskTitle);
 
       // Create a data object to send
       const taskCreateData = {
@@ -211,32 +199,37 @@ document.addEventListener("DOMContentLoaded", function () {
       };
 
       // Send data over WebSocket
+      console.log("Sending data over WebSocket");
       taskSocket.send(JSON.stringify(taskCreateData));
       closeModal("createTaskModal");
     });
+  }
 
   // Form submission handler for editing an existing task
-  document.getElementById("editForm").addEventListener("submit", function (e) {
-    e.preventDefault();
+  const editForm = document.getElementById("editForm");
+  if (editForm) {
+    editForm.addEventListener("submit", function (e) {
+      e.preventDefault();
 
-    const taskId = document.getElementById("editTaskId").value;
-    const taskTitle = document.getElementById("taskTitle").value;
-    const taskDueDate = document.getElementById("taskDueDate").value;
-    const taskDescription = document.getElementById("taskDescription").value;
+      const taskId = document.getElementById("editTaskId").value;
+      const taskTitle = document.getElementById("taskTitle").value;
+      const taskDueDate = document.getElementById("taskDueDate").value;
+      const taskDescription = document.getElementById("taskDescription").value;
 
-    // Create a data object to send
-    const taskUpdateData = {
-      type: "update_task",
-      task_id: taskId,
-      title: taskTitle,
-      due_date: taskDueDate,
-      description: taskDescription,
-    };
+      // Create a data object to send
+      const taskUpdateData = {
+        type: "update_task",
+        task_id: taskId,
+        title: taskTitle,
+        due_date: taskDueDate,
+        description: taskDescription,
+      };
 
-    // Send data over WebSocket
-    taskSocket.send(JSON.stringify(taskUpdateData));
-    closeModal("editModal");
-  });
+      // Send data over WebSocket
+      taskSocket.send(JSON.stringify(taskUpdateData));
+      closeModal("editModal");
+    });
+  }
 
   // Complete Task Function
   window.completeTask = (taskId) => {

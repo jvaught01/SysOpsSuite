@@ -182,6 +182,89 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  function receiveNewTask(event) {
+    const data = JSON.parse(event.data);
+
+    if (data.type === "create_task") {
+      const taskId = data.task_id;
+      const taskTitle = data.title;
+      const taskDueDate = data.due_date;
+
+      // Update task title and due date dynamically
+      addNewTaskElement(taskId, taskTitle, taskDueDate);
+    }
+  }
+
+  // Add New Task Element Function
+  function addNewTaskElement(taskId, taskTitle, taskDueDate, description) {
+    const taskContainer = document.createElement("div");
+    taskContainer.classList.add(
+      "task-container",
+      "mb-5",
+      "p-5",
+      "bg-white",
+      "shadow",
+      "rounded-2xl",
+      "flex",
+      "flex-col",
+      "md:flex-row",
+      "items-start",
+      "md:items-center",
+      "justify-between"
+    );
+    taskContainer.setAttribute("data-task-id", taskId);
+
+    taskContainer.innerHTML = `
+        <div class="flex-1 mb-4 md:mb-0">
+          <h1 class="text-xl md:text-2xl font-bold mb-2 md:mb-0" data-task-id="${taskId}" data-task-field="title">${taskTitle}</h1>
+          <div class="text-gray-500 text-sm">
+            Due Date: <span data-task-id="${taskId}" data-task-field="due-date">${taskDueDate}</span><br />
+            Description: <span data-task-id="${taskId}" data-task-field="description">${description}</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-4 mt-4 md:mt-0">
+          <form method="post">
+            <input type="checkbox" onclick="completeTask(${taskId})" class="shrink-0 mt-0.5 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" id="task-complete-${taskId}" data-task-id="${taskId}" data-complete="False" />
+            <label for="task-complete-${taskId}" class="text-sm text-gray-500">Task Complete</label>
+          </form>
+          <button type="button" class="editTaskButton inline-flex items-center justify-center h-9 px-4 md:px-6 rounded-xl bg-gray-900 text-white text-sm font-semibold transition-all duration-200" data-task-id="${taskId}">
+            Edit Task
+          </button>
+          <button type="button" class="deleteTaskButton inline-flex items-center justify-center h-9 px-4 md:px-6 rounded-xl bg-red-600 text-white text-sm font-semibold transition-all duration-200" data-task-id="${taskId}">
+          <!-- Trashcan Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.137 21H7.863a2 2 0 01-1.996-1.858L5 7m5 4v6m4-6v6M1 3h22M4 7h16"></path>
+          </svg>
+        </button>
+        </div>
+      `;
+
+    // Insert the new task container before the "Create New Task" button
+    const taskListContainer = document.getElementById("taskListContainer");
+    if (taskListContainer) {
+      taskListContainer.appendChild(taskContainer);
+    }
+
+    // Add event listener for the new edit button
+    const editButton = taskContainer.querySelector(".editTaskButton");
+    if (editButton) {
+      editButton.addEventListener("click", function () {
+        const taskId = this.getAttribute("data-task-id");
+        document.getElementById("editTaskId").value = taskId;
+        openModal("editModal");
+      });
+    }
+
+    // Add event listener for the new delete button
+    const deleteButton = taskContainer.querySelector(".deleteTaskButton");
+    if (deleteButton) {
+      deleteButton.addEventListener("click", function () {
+        const taskId = this.getAttribute("data-task-id");
+        deleteTask(taskId);
+      });
+    }
+  }
+
   function updateTaskElements(taskId, taskTitle, taskDueDate) {
     const titleElement = document.querySelector(
       `[data-task-id='${taskId}'][data-task-field='title']`
@@ -210,8 +293,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Handle WebSocket message
-  taskSocket.onmessage = receiveTaskUpdate;
+  // Handle WebSocket message based on event type
+  if (taskSocket) {
+    taskSocket.onmessage = function (e) {
+      const data = JSON.parse(e.data);
+      if (data.type === "task_update") {
+        receiveTaskUpdate(e);
+      } else if (data.type === "create_task") {
+        receiveNewTask(e);
+      }
+    };
+  }
+
+  // Add event listener for the new edit button
 
   // Run on page load to cross out completed tasks
   document.querySelectorAll("[data-complete='true']").forEach((checkbox) => {

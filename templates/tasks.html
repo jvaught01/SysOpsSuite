@@ -1,4 +1,6 @@
-{% extends "base.html" %} {% load static %} {% block content %}
+{% extends "base.html" %} 
+{% load static %} 
+{% block content %}
 <div class="bg-white rounded-3xl p-8 mb-5" id="taskListContainer">
   {% for task in tasks %}
   <div
@@ -117,6 +119,7 @@
   <div class="bg-white rounded-lg p-8 max-w-lg w-full">
     <h2 class="text-xl font-bold mb-4">Create New Task</h2>
     <form id="createTaskForm" data-user-id="{{ user.id }}">
+      {% csrf_token %}
       <div class="mb-4">
         <label
           for="newTaskTitle"
