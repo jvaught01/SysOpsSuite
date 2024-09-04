@@ -144,3 +144,32 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_REDIRECT_URL = "/dashboard/"
 LOGOUT_REDIRECT_URL = "/login"
+
+
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "handlers": {
+#         "console": {
+#             "level": "DEBUG",  # Set log level to DEBUG
+#             "class": "logging.StreamHandler",
+#         },
+#     },
+#     "root": {
+#         "handlers": ["console"],
+#         "level": "DEBUG",  # Set log level to DEBUG
+#     },
+#     "loggers": {
+#         "django": {
+#             "handlers": ["console"],
+#             "level": "DEBUG",  # Set log level to DEBUG
+#             "propagate": True,
+#         },
+#         # Optionally, add other loggers here
+#         "my_app": {  # Replace 'my_app' with your app name
+#             "handlers": ["console"],
+#             "level": "DEBUG",  # Set log level to DEBUG
+#             "propagate": False,
+#         },
+#     },
+# }
