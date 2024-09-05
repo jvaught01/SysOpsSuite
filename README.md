@@ -112,7 +112,11 @@ You may also need to run the channels layer using daphne or uvicorn if configure
 Open your browser and navigate to:
 
 http://127.0.0.1:8000/
-You should see the SysOpsSuite dashboard, where you can manually trigger backups, monitor real-time progress, and search through device configurations.
+
+
+Login and head over the "manual triggers" and start the running config to json task.
+
+Once finished you should be able to search through the dummy running config data, see backup statuses, etc.
 
 ## Usage
 Manual Triggers: Navigate to the "Manual Triggers" page and click the "Start Backup Processing" button. You'll see a progress bar that dynamically updates as backups are processed.
