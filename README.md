@@ -66,10 +66,17 @@ python -m venv venv
 ```bash
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
-### 3. Install Dependencies
+### 3. Install Dependencies and create super user
 ```bash
 pip install -r requirements.txt
 ```
+```bash
+python3 manage.py createsuperuser
+```
+username: john.doe@app.com
+email: john.doe@app.com
+password: Welcome100!
+
 ### 4. Set Up Django
 Make sure you have PostgreSQL or SQLite installed, and update your settings.py to reflect the correct database setup. Then run:
 ```bash
