@@ -3,7 +3,7 @@ from datetime import datetime
 import django
 import logging as log
 from time import sleep
-from alive_progress import alive_bar  # Import alive-progress for the progress bar
+from alive_progress import alive_bar
 
 log.basicConfig(level=log.DEBUG)
 # Set up Django environment
@@ -14,7 +14,7 @@ from parse import parse_switch_config  # noqa: E402
 from Backups.models import Backup  # noqa: E402
 
 # Directory containing the backups
-BACKUP_DIR = "/Users/jvaught/Documents/python/projects/SYSOPSSUITE/Backups/DummyData/"
+BACKUP_DIR = "Backups/DummyData/"
 
 
 def save_config_to_db(
@@ -36,7 +36,7 @@ def save_config_to_db(
 
 
 def extract_metadata_from_path(root, file):
-    backup_date_str = os.path.basename(root)  # Example: "08-21-2024_10-35-58"
+    backup_date_str = os.path.basename(root)
 
     try:
         # Attempt to parse the directory name as a date
