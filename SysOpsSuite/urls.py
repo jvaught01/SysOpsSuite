@@ -25,6 +25,7 @@ from Backups.views import backups_view
 from config_search.views import config_search_view
 from tasks.views import tasks_view, edit_task, complete_task
 from dashboard.views import home_view
+from manual_triggers.views import manual_triggers
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -36,4 +37,5 @@ urlpatterns = [
     path("dashboard/tasks", tasks_view, name="task_list"),
     path("edit-task/<int:task_id>/", edit_task, name="edit_task"),
     path("complete-task/<int:task_id>/", complete_task, name="complete_task"),
+    path("dashboard/manual_triggers", manual_triggers, name="manual_triggers"),
 ]

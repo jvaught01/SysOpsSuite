@@ -9,3 +9,5 @@ def config_search_view(request):
 
     if backups:
         return render(request, "config_search.html", {"results": backups})
+    else:
+        return render(request, "config_search.html", {"results": None})

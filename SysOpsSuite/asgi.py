@@ -4,6 +4,7 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 import tasks.routing
 import config_search.routing
+import manual_triggers.routing
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "SysOpsSuite.settings")
 
@@ -14,6 +15,7 @@ application = ProtocolTypeRouter(
             URLRouter(
                 tasks.routing.websocket_urlpatterns
                 + config_search.routing.websocket_urlpatterns
+                + manual_triggers.routing.websocket_urlpatterns
             )
         ),
     }

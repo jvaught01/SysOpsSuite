@@ -1,0 +1,140 @@
+!
+! Cisco Switch Configuration
+!
+version 15.2
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+hostname DummySwitch
+!
+boot-start-marker
+boot-end-marker
+!
+!
+enable secret 5 $1$dummy$dummyencryptedpassword
+!
+aaa new-model
+!
+!
+aaa authentication login default local
+aaa authorization exec default local
+!
+!
+!
+ip routing
+ip domain-name dummy.local
+!
+crypto key generate rsa general-keys modulus 2048
+!
+spanning-tree mode rapid-pvst
+!
+! VLAN Configurations
+vlan 10
+ name DummyVLAN10
+vlan 20
+ name DummyVLAN20
+vlan 30
+ name DummyVLAN30
+!
+!
+interface GigabitEthernet0/1
+ description Uplink to Router
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30
+ spanning-tree portfast trunk
+!
+interface GigabitEthernet0/2
+ description Dummy Connection A
+ switchport access vlan 10
+ switchport mode access
+ spanning-tree portfast
+!
+interface GigabitEthernet0/3
+ description Dummy Connection B
+ switchport access vlan 20
+ switchport mode access
+ spanning-tree portfast
+!
+interface GigabitEthernet0/4
+ description Dummy Connection C
+ switchport access vlan 30
+ switchport mode access
+ spanning-tree portfast
+!
+! Layer 3 Interface Configurations
+interface Vlan1
+ ip address 192.168.1.1 255.255.255.0
+ no shutdown
+!
+interface Vlan10
+ ip address 10.0.10.1 255.255.255.0
+ no shutdown
+!
+interface Vlan20
+ ip address 10.0.20.1 255.255.255.0
+ no shutdown
+!
+interface Vlan30
+ ip address 10.0.30.1 255.255.255.0
+ no shutdown
+!
+ip default-gateway 192.168.1.254
+!
+ip route 0.0.0.0 0.0.0.0 192.168.1.254
+ip route 10.0.40.0 255.255.255.0 192.168.1.2
+ip route 172.16.0.0 255.255.255.0 10.0.10.254
+!
+! BGP Configuration
+router bgp 65001
+ bgp log-neighbor-changes
+ network 10.0.10.0 mask 255.255.255.0
+ network 10.0.20.0 mask 255.255.255.0
+ network 10.0.30.0 mask 255.255.255.0
+ neighbor 192.168.1.2 remote-as 65002
+ neighbor 192.168.1.2 update-source Loopback0
+!
+! BGP Neighbor Configuration (Dummy neighbor)
+neighbor 10.0.10.2 remote-as 65003
+ neighbor 10.0.10.2 update-source Loopback0
+!
+! Access Control Lists (Dummy ACLs)
+! ACL for allowing specific traffic
+ip access-list extended DUMMY_ACL_IN
+ permit ip 10.0.10.0 0.0.0.255 any
+ permit ip 10.0.20.0 0.0.0.255 any
+ deny   ip any any log
+!
+! ACL for restricting access to management interfaces
+ip access-list extended MANAGEMENT_ACL
+ permit tcp 192.168.1.0 0.0.0.255 any eq 22
+ deny   ip any any
+!
+! Apply ACLs to interfaces
+interface Vlan1
+ ip access-group DUMMY_ACL_IN in
+!
+interface GigabitEthernet0/1
+ ip access-group DUMMY_ACL_IN in
+!
+! Static Routes
+ip route 10.0.40.0 255.255.255.0 192.168.1.2
+ip route 172.16.0.0 255.255.255.0 10.0.10.254
+ip route 192.168.2.0 255.255.255.0 10.0.20.254
+!
+logging buffered 51200 warnings
+!
+line con 0
+ password dummyconsole
+ login
+!
+line vty 0 4
+ password dummytelnet
+ login
+ transport input ssh
+!
+line vty 5 15
+ password dummytelnet
+ login
+ transport input ssh
+!
+end

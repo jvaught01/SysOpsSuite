@@ -159,7 +159,7 @@
                 </li>
                 <li>
                   <a
-                    href="javascript:void(0)"
+                    href="{% url 'manual_triggers' %}"
                     class="flex items-center {% if request.path == '/dashboard/healthcheck/' %}bg-yellow-200{% else %}bg-white hover:bg-yellow-200{% endif %} rounded-xl font-bold text-sm text-black py-3 px-4"
                   >
                     <svg
@@ -173,7 +173,7 @@
                       <path
                         d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1H2zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"
                       /></svg
-                    >Health Check
+                    >Manual Triggers
                   </a>
                 </li>
               </ul>
