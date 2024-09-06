@@ -67,7 +67,7 @@ class TriggerConsumer(WebsocketConsumer):
             json.dumps(
                 {
                     "type": "process_complete",
-                    "message": "Backup processing completed. Please check backup status or search configs in config search.",
+                    "message": "Running cofig successfully converted to JSON. Please check backup status in 'backups' or search configs in 'config search'.",
                 }
             )
         )
